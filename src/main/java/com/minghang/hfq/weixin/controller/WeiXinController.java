@@ -1,16 +1,15 @@
 package com.minghang.hfq.weixin.controller;
 
 import com.minghang.hfq.weixin.util.WxUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,24 +28,23 @@ import java.util.Map;
  * @Date: 2018/7/26
  * @Description 微信相关路由，如绑定
  */
-@Controller
+@RestController
 @RequestMapping("/wx")
+@Slf4j
 public class WeiXinController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(WeiXinController.class);
 
     /**
      * 验证绑定服务器
      *
      * @return 微信回调字符串
      */
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
+    @GetMapping(produces = "text/plain;charset=utf-8")
     public String checkWeiXinServer(String signature, String timestamp, String nonce, String echostr) {
         if (WxUtil.checkSignature(signature, timestamp, nonce)) {
+            log.debug("验证服务器成功");
             return echostr;
         }
-        LOGGER.debug("验证服务器失败，%s", Arrays.asList(signature, timestamp, nonce, echostr));
+        log.debug("验证服务器失败，%s", Arrays.asList(signature, timestamp, nonce, echostr));
         return null;
     }
 
