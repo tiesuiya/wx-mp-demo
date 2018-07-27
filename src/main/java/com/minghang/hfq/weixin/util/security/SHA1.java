@@ -1,4 +1,4 @@
-package com.minghang.hfq.weixin.util;
+package com.minghang.hfq.weixin.util.security;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +27,7 @@ public final class SHA1 {
      */
     public static String gen(String... arr) {
         if (StringUtils.isAnyEmpty(arr)) {
-            throw new IllegalArgumentException("非法请求参数，有部分参数为空");
+            throw new IllegalArgumentException("非法请求，部分参数为空");
         }
 
         Arrays.sort(arr);

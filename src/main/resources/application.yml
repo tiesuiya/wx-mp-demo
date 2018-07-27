@@ -35,6 +35,7 @@ third-party:
 logging:
   level:
     com.minghang: DEBUG
+  file: D:\ProjectsLog\wx-mp-demo.log
 ---
 # 开发环境-HOME
 server:

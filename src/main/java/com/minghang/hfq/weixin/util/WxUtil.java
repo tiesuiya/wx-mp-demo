@@ -1,8 +1,7 @@
 package com.minghang.hfq.weixin.util;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.minghang.hfq.weixin.util.security.SHA1;
 
 /**
  * 微信工具类
@@ -13,10 +12,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class WxUtil {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WxUtil.class);
-
     private WxUtil() {
-
     }
 
     /**
@@ -24,7 +20,7 @@ public final class WxUtil {
      *
      * @param signature 签名
      * @param timestamp 时间戳
-     * @param nonce     回调字符串
+     * @param nonce     随机数
      * @return 验证结果
      */
     public static boolean checkSignature(String signature, String timestamp, String nonce) {
