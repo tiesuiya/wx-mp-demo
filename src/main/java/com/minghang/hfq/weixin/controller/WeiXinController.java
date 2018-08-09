@@ -15,9 +15,9 @@ import java.util.Arrays;
  * @Date: 2018/7/26
  * @Description 微信相关路由，如绑定
  */
-@RestController
-@RequestMapping("/wx")
 @Slf4j
+@RestController
+@RequestMapping("/weixin")
 public class WeiXinController {
 
     /**
@@ -31,8 +31,8 @@ public class WeiXinController {
             log.debug("验证服务器成功");
             return echostr;
         }
-        log.debug("验证服务器失败，%s", Arrays.asList(signature, timestamp, nonce, echostr));
-        return "非法请求";
+        log.debug("验证服务器失败，{}", Arrays.asList(signature, timestamp, nonce, echostr));
+        return null;
     }
 
     /**

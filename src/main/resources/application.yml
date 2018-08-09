@@ -39,7 +39,7 @@ logging:
 ---
 # 开发环境-HOME
 server:
-  port: 7777
+  port: 8080
 spring:
   profiles: dev-home
   jpa:
@@ -61,4 +61,4 @@ third-party:
   weixin:
     app-id: wx5b3a1fb38f8b65b0
     appsecret: 6b7385ba7be92ad5e0d486ad28bd13f6
-    token: TIESUIYA
+    token: HFQWEIXINTEST
