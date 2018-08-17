@@ -12,7 +12,7 @@ server:
 ---
 # 开发环境
 server:
-  port: 7777
+  port: 8080
 spring:
   profiles: dev
   jpa:
