@@ -13,10 +13,9 @@ import java.util.Arrays;
  * @Date: 2018/7/26
  * @Description 加密工具类
  */
-public final class SHA1 {
+public final class Sha1 {
 
-    private SHA1() {
-
+    private Sha1() {
     }
 
     /**

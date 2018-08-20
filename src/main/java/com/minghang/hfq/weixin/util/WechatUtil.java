@@ -1,7 +1,7 @@
 package com.minghang.hfq.weixin.util;
 
 
-import com.minghang.hfq.weixin.util.security.SHA1;
+import com.minghang.hfq.weixin.util.security.Sha1;
 
 /**
  * 微信工具类
@@ -10,9 +10,9 @@ import com.minghang.hfq.weixin.util.security.SHA1;
  * @Date: 2018/7/26
  * @Description 微信验签
  */
-public final class WxUtil {
+public final class WechatUtil {
 
-    private WxUtil() {
+    private WechatUtil() {
     }
 
     /**
@@ -28,7 +28,7 @@ public final class WxUtil {
         String token = "TIESUIYA";
 
         // 计算sha1
-        String temp = SHA1.gen(token, timestamp, nonce);
+        String temp = Sha1.gen(token, timestamp, nonce);
 
         // 对比signature
         return temp.equals(signature.toUpperCase());

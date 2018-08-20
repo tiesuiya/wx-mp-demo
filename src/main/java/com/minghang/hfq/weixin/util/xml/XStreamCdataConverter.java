@@ -11,6 +11,10 @@ import com.thoughtworks.xstream.converters.basic.StringConverter;
  */
 public class XStreamCdataConverter extends StringConverter {
 
+    /**
+     * Object to XML时为内容添加CDATA标记
+     * XStreamConverter(value = XStreamCdataConverter.class)
+     */
     @Override
     public String toString(Object obj) {
         return Cdata.PREFIX_CDATA + super.toString(obj) + Cdata.SUFFIX_CDATA;
