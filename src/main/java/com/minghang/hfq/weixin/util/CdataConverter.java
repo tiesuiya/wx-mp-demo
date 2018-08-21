@@ -1,4 +1,4 @@
-package com.minghang.hfq.weixin.util.xml;
+package com.minghang.hfq.weixin.util;
 
 import com.thoughtworks.xstream.converters.basic.StringConverter;
 
@@ -10,6 +10,15 @@ import com.thoughtworks.xstream.converters.basic.StringConverter;
  * @Description
  */
 public class XStreamCdataConverter extends StringConverter {
+    /**
+     * CDATA头
+     */
+    public static final String PREFIX_CDATA = "<![CDATA[";
+
+    /**
+     * CDATA尾
+     */
+    public static final String SUFFIX_CDATA = "]]>";
 
     /**
      * Object to XML时为内容添加CDATA标记
@@ -17,7 +26,7 @@ public class XStreamCdataConverter extends StringConverter {
      */
     @Override
     public String toString(Object obj) {
-        return Cdata.PREFIX_CDATA + super.toString(obj) + Cdata.SUFFIX_CDATA;
+        return XStreamCdataConverter.PREFIX_CDATA + super.toString(obj) + XStreamCdataConverter.SUFFIX_CDATA;
     }
 
 }
