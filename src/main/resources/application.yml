@@ -2,8 +2,11 @@ spring:
   profiles:
     active: dev
 
-wechat-mp:
+wechat:
+  mp:
+    url:
+      # 获取access_token
+      accessToken: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
     message:
-      template:
-        welcome: 嘿嘿嘿，你来啦！
-        prompt: 嘘~别瞎说。
+      welcome: 嘿嘿嘿，你来啦！
+      prompt: 嘘~别瞎说。

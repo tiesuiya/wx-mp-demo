@@ -1,25 +1,25 @@
 # 开发环境
 server:
   port: 8080
-spring:
-  jpa:
-    database: MYSQL
-    generate-ddl: false
-    show-sql: true
-    hibernate:
-      ddl-auto: none
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3306/wx-mp-demo?useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false
-    username : root
-    password : 123456
-    driver-class-name: com.mysql.jdbc.Driver
-    sql-script-encoding: utf-8
-third-party:
-  weixin:
-    app-id: wx5b3a1fb38f8b65b0
-    appsecret: 6b7385ba7be92ad5e0d486ad28bd13f6
+
+wechat:
+  mp:
+    appId: wx5b3a1fb38f8b65b0
+    appSecret: 6b7385ba7be92ad5e0d486ad28bd13f6
     token: HFQWEIXINTEST
+
+spring:
+  redis:
+    host: 127.0.0.1
+    password:
+    port: 6379
+    pool:
+      max-idle: 100
+      min-idle: 1
+      max-active: 1000
+      max-wait: -1
+
 logging:
   level:
     com.minghang: DEBUG
-  file: D:\ProjectsLog\wx-mp-demo.log
+  file: D:\ProjectsLog\wx-mp-demo-dev.log

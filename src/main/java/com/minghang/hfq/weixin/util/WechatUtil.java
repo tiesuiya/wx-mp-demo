@@ -1,7 +1,10 @@
 package com.minghang.hfq.weixin.util;
 
 
-import com.minghang.hfq.weixin.util.security.Sha1;
+import com.minghang.hfq.weixin.resources.WechatConfig;
+import com.minghang.hfq.weixin.resources.WechatUrlConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * 微信工具类
@@ -10,9 +13,17 @@ import com.minghang.hfq.weixin.util.security.Sha1;
  * @Date: 2018/7/26
  * @Description 微信验签
  */
-public final class WechatUtil {
+@Component
+public final class WechatUtil implements Wechat {
 
-    private WechatUtil() {
+    private static WechatConfig wechatConfig;
+
+    private static WechatUrlConfig wechatUrlConfig;
+
+    @Autowired
+    private WechatUtil(WechatConfig wechatConfig, WechatUrlConfig wechatUrlConfig) {
+        WechatUtil.wechatConfig = wechatConfig;
+        WechatUtil.wechatUrlConfig = wechatUrlConfig;
     }
 
     /**
@@ -34,4 +45,13 @@ public final class WechatUtil {
         return temp.equals(signature.toUpperCase());
     }
 
+
+    /**
+     * 构建，获取AccessToken请求的地址
+     *
+     * @return url
+     */
+    public static String getAccessTokenUrl() {
+        return wechatUrlConfig.getAccessToken().replace(APP_ID, wechatConfig.getAppId()).replace(APP_SECRET, wechatConfig.getAppSecret());
+    }
 }

@@ -4,10 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
-import redis.clients.jedis.Jedis;
+
+import java.util.concurrent.TimeUnit;
 
 /**
- * RedisDao
+ * WechatDao
  *
  * @Author: lihong
  * @Date: 2018/8/21
@@ -15,7 +16,7 @@ import redis.clients.jedis.Jedis;
  */
 @Slf4j
 @Repository
-public class RedisDao {
+public class WechatDao {
 
     /**
      * access_token在redis存储用key
@@ -40,13 +41,7 @@ public class RedisDao {
      * @param accessToken 微信token
      * @param seconds     有效期（秒）
      */
-    public void putAccessToken(String accessToken, int seconds) {
-        redisTemplate.opsForValue().set();
-        try (Jedis jedis = jedisPool.getResource()) {
-            String result = jedis.setex(ACCESS_TOKEN_KEY, seconds, accessToken);
-            log.debug(String.format("Redis添加accessToken结果：%s(%s)", result, accessToken));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
+    public void putAccessToken(String accessToken, long seconds) {
+        redisTemplate.opsForValue().set(ACCESS_TOKEN_KEY, accessToken, seconds, TimeUnit.SECONDS);
     }
 }

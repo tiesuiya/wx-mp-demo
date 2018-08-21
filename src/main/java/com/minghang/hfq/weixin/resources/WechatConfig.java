@@ -1,4 +1,4 @@
-package com.minghang.hfq.weixin.config;
+package com.minghang.hfq.weixin.resources;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

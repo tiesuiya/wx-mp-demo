@@ -1,4 +1,4 @@
-package com.minghang.hfq.weixin.config;
+package com.minghang.hfq.weixin.resources;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class WechatUrlConfig {
 
     /**
-     * 获取access_token
+     * 获取access_token的url
      */
     @Value("${wechat.mp.url.accessToken}")
     private String accessToken;

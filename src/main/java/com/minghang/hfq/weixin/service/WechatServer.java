@@ -1,14 +1,23 @@
 package com.minghang.hfq.weixin.service;
 
-import com.minghang.hfq.weixin.config.MessageTemplate;
+import com.google.gson.Gson;
+import com.minghang.hfq.weixin.resources.WechatMessageConfig;
+import com.minghang.hfq.weixin.dao.WechatDao;
 import com.minghang.hfq.weixin.util.MessageUtil;
+import com.minghang.hfq.weixin.util.WechatUtil;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -23,7 +32,10 @@ import java.util.Map;
 public class WechatServer {
 
     @Autowired
-    private MessageTemplate messageTemplate;
+    private WechatMessageConfig messageConfig;
+
+    @Autowired
+    private WechatDao wechatDao;
 
     /**
      * 处理微信发来的请求
@@ -53,11 +65,11 @@ public class WechatServer {
                 // 订阅
                 if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
                     // 默认返回的文本消息内容(首次关注提示)
-                    respMessage = MessageUtil.createTextMsg(fromUserName, toUserName, System.currentTimeMillis(), MessageUtil.RESPONSE_MESSAGE_TYPE_TEXT, 0, messageTemplate.getWelcome());
+                    respMessage = MessageUtil.createTextMsg(fromUserName, toUserName, System.currentTimeMillis(), MessageUtil.RESPONSE_MESSAGE_TYPE_TEXT, 0, messageConfig.getWelcome());
                 }
             } else {
                 // 默认返回的文本消息内容
-                respMessage = MessageUtil.createTextMsg(fromUserName, toUserName, System.currentTimeMillis(), MessageUtil.RESPONSE_MESSAGE_TYPE_TEXT, 0, messageTemplate.getPrompt());
+                respMessage = MessageUtil.createTextMsg(fromUserName, toUserName, System.currentTimeMillis(), MessageUtil.RESPONSE_MESSAGE_TYPE_TEXT, 0, messageConfig.getPrompt());
             }
         } catch (Exception e) {
             // 记录日志
@@ -67,6 +79,42 @@ public class WechatServer {
             String content = "wechat-mp异常 : " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " \n " + e.getLocalizedMessage();
         }
         return respMessage;
+    }
+
+    /**
+     * 获取AccessToken缓存
+     *
+     * @return AccessToken缓存
+     */
+    public String getAccessTokenCache() {
+        String accessToken = wechatDao.getAccessToken();
+        if (StringUtils.isBlank(accessToken)) {
+            // 通过api获取
+            double expiresIn;
+            String keyToken = "access_token";
+            String keyExpires = "expires_in";
+
+            String url = WechatUtil.getAccessTokenUrl();
+
+            try {
+                OkHttpClient client = new OkHttpClient();
+                Request request = new Request.Builder().url(url).get().addHeader("Cache-Control", "no-cache").build();
+                Response response = client.newCall(request).execute();
+                String responseStr = response.body().string();
+                if (responseStr.contains(keyToken)) {
+                    Gson gson = new Gson();
+                    HashMap map = gson.fromJson(responseStr, HashMap.class);
+
+                    accessToken = (String) map.get(keyToken);
+                    expiresIn = Double.parseDouble(String.valueOf(map.get(keyExpires)));
+                    // 存入Redis
+                    wechatDao.putAccessToken(accessToken, (long) expiresIn);
+                }
+            } catch (IOException e) {
+                log.error("获取accessToken出错", e.getMessage());
+            }
+        }
+        return accessToken;
     }
 
 }
